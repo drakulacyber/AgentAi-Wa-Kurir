@@ -1,11 +1,5 @@
 /**
  * WhatsApp <-> Telegram Bridge & AI CS Relay System
- * 
- * ALUR KERJA:
- * 1. Customer kirim chat di WhatsApp.
- * 2. Sistem teruskan chat & data customer ke Telegram Admin (@Agent_Ai_Layanan_bot).
- * 3. Gemini AI memproses balasan otomatis + 3 saran balasan (Smart Suggestions).
- * 4. Balasan AI (atau pesan balasan dari Admin di Telegram) langsung dikirim kembali ke WhatsApp Customer!
  */
 
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
@@ -31,8 +25,6 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || env.GEMINI_API_KEY || 'AQ.A
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || env.TELEGRAM_BOT_TOKEN || '8530097732:AAFaGlPj3kDAT-66ZtfEcCQ03IqoEpekC00';
 const AGENT_NAME = process.env.AGENT_NAME || env.AGENT_NAME || 'Agent Ai Layanan';
 
-// Mapping for Active WA Chats (Customer JID <-> Telegram Chat ID)
-const waCustomerMap = new Map();
 let lastAdminTelegramChatId = null;
 
 async function sendTelegramMessage(chatId, text) {
@@ -67,27 +59,41 @@ async function generateAIResponse(userText) {
 }
 
 async function startBridgeSystem() {
-  console.log('⚡ Launching WhatsApp <-> Telegram AI Relay Bridge...');
+  console.log('\n==================================================');
+  console.log('⚡ LAUNCHING WHATSAPP <-> TELEGRAM AI RELAY BRIDGE');
+  console.log('==================================================\n');
+
   const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
 
   const sock = makeWASocket({
     logger: pino({ level: 'silent' }),
-    printQRInTerminal: true,
-    auth: state
+    auth: state,
+    browser: ["AgentAiLayanan", "Chrome", "1.0.0"]
   });
 
   sock.ev.on('creds.update', saveCreds);
 
   sock.ev.on('connection.update', (update) => {
     const { connection, lastDisconnect, qr } = update;
+
     if (qr) {
-      console.log('\n==================================================');
-      console.log('📱 SCAN QR CODE WA DI BAWAH UNTUK VERIFIKASI:');
-      console.log('==================================================\n');
+      console.log('\n📱 SCAN QR CODE WHATSAPP DI BAWAH INI PAKAI HP ANDA:');
+      console.log('--------------------------------------------------');
       qrcode.generate(qr, { small: true });
+      console.log('--------------------------------------------------\n');
     }
+
     if (connection === 'open') {
-      console.log('🎉 SUCCESS! WA <-> Telegram Bridge Engine ONLINE!');
+      console.log('\n🎉 SUCCESS! WHATSAPP ⇄ TELEGRAM BRIDGE IS NOW ONLINE & CONNECTED!');
+      console.log('Ready to process live WhatsApp customer messages via Telegram!\n');
+    } else if (connection === 'close') {
+      const statusCode = lastDisconnect?.error?.output?.statusCode;
+      console.log(`Connection closed (code: ${statusCode}). Reconnecting...`);
+      if (statusCode === DisconnectReason.loggedOut) {
+        console.log('Session logged out. Cleaning session files and restarting...');
+        try { fs.rmSync('auth_info_baileys', { recursive: true, force: true }); } catch(e) {}
+      }
+      setTimeout(startBridgeSystem, 3000);
     }
   });
 
@@ -104,16 +110,13 @@ async function startBridgeSystem() {
 
     console.log(`\n[WA Customer] ${customerName} (${waJid}): ${customerText}`);
 
-    // Generate AI Reply
     const aiReply = await generateAIResponse(customerText);
 
-    // Forward Customer WA Message to Telegram Admin
     if (lastAdminTelegramChatId) {
       const tgNotification = `📩 <b>Pesan Masuk WA Customer!</b>\n👤 <b>Nama:</b> ${customerName}\n📱 <b>No. WA:</b> ${waJid.split('@')[0]}\n\n💬 <b>Pesan WA:</b> ${customerText}\n\n🤖 <b>Rekomendasi Balasan AI:</b>\n<i>"${aiReply}"</i>`;
       await sendTelegramMessage(lastAdminTelegramChatId, tgNotification);
     }
 
-    // Auto Send Reply to WhatsApp Customer
     await sock.sendPresenceUpdate('composing', waJid);
     await sock.sendMessage(waJid, { text: aiReply });
     console.log(`[WA Balasan Terkirim ke ${customerName}]: ${aiReply}`);
@@ -138,7 +141,6 @@ async function startBridgeSystem() {
             console.log(`[Telegram Admin ${chatId}]: ${text}`);
 
             if (text.startsWith('/reply')) {
-              // Format: /reply [WA_NUMBER] [MESSAGE]
               const parts = text.split(' ');
               if (parts.length >= 3) {
                 const targetNum = parts[1].replace(/[^0-9]/g, '') + '@s.whatsapp.net';
