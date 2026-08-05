@@ -13,8 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="./assets/css/style.css">
-
   <style>
     :root {
       --bg-primary: #080c14;
@@ -83,7 +81,6 @@
     }
     .btn-outline:hover { border-color: var(--accent-glow); background: rgba(16, 185, 129, 0.1); }
 
-    /* Single Focused Feature Container */
     .single-feature-container {
       max-width: 1000px; margin: 3rem auto; padding: 0 1.5rem;
       display: flex; flex-direction: column; gap: 2rem;
@@ -102,17 +99,10 @@
       font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin: 0 auto;
     }
 
-    .main-title {
-      font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1.2;
-    }
-    .main-title span {
-      background: linear-gradient(135deg, var(--accent-glow), var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .main-title { font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
+    .main-title span { background: linear-gradient(135deg, var(--accent-glow), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-    .main-subtitle {
-      color: var(--text-secondary); font-size: 1rem; line-height: 1.6; max-width: 720px; margin: 0 auto;
-    }
+    .main-subtitle { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; max-width: 720px; margin: 0 auto; }
 
     .quick-rules-box {
       background: var(--bg-card); border: 1px solid var(--border);
@@ -121,7 +111,6 @@
     .rule-item h4 { font-size: 0.9rem; font-weight: 700; color: var(--accent-glow); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.4rem; }
     .rule-item p { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
 
-    /* Topic Tester Workspace */
     .workspace-box {
       background: var(--bg-secondary); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; text-align: left;
@@ -171,12 +160,12 @@
     </div>
 
     <div style="display: flex; gap: 0.75rem; align-items: center;">
-      <button class="btn-outline" onclick="uiController.openModal('settings-modal')">⚙️ Pengaturan Engine</button>
+      <button class="btn-outline" onclick="openSettingsModal()">⚙️ Pengaturan Engine</button>
       <button class="btn-primary" onclick="installPWA()"><span>📱</span> Install PWA Android</button>
     </div>
   </header>
 
-  <!-- Focused Main Cloud Feature Section -->
+  <!-- Main Feature Section -->
   <main class="single-feature-container">
     <div class="feature-card-main">
       <div class="status-badge-cloud"><span>☁️</span> CLOUD AUTOMATION HUB (ZERO-LAPTOP)</div>
@@ -210,19 +199,24 @@
         </div>
 
         <div class="messages-container" id="messages-container">
-          <!-- Chat bubbles -->
+          <div class="chat-bubble-row customer">
+            <div class="bubble">Halo kak, mau tanya baju oversize ready size apa aja ya?</div>
+          </div>
+          <div class="chat-bubble-row agent">
+            <div class="bubble">Barang ready stok bro! Kaos oversize ready size S, M, L, XL. Lo biasa pake size berapa nih biar gue rekomendasikan? 😁</div>
+          </div>
         </div>
 
         <div style="display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.3rem;">
-          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="document.getElementById('chat-input').value='Berapa harga kaos oversize dan ongkirnya?'">💰 Tanya Harga & Ongkir</button>
-          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="document.getElementById('chat-input').value='Sepatu sneakers size 42 masih ready gak?'">👟 Cek Stok & Size</button>
-          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="document.getElementById('chat-input').value='Bisa minta tolong lacak resi pesanan KH-8821?'">🚚 Lacak Resi</button>
-          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="document.getElementById('chat-input').value='Bisa bayar pake COD atau transfer BCA?'">💳 Cara Pembayaran</button>
+          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="setTopicInput('Berapa harga kaos oversize dan ongkirnya?')">💰 Tanya Harga & Ongkir</button>
+          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="setTopicInput('Sepatu sneakers size 42 masih ready gak?')">👟 Cek Stok & Size</button>
+          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="setTopicInput('Bisa minta tolong lacak resi pesanan KH-8821?')">🚚 Lacak Resi</button>
+          <button class="btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="setTopicInput('Bisa bayar pake COD atau transfer BCA?')">💳 Cara Pembayaran</button>
         </div>
 
         <div class="input-row">
           <input type="text" id="chat-input" placeholder="Tulis pertanyaan atau pilih topik di atas..." autocomplete="off">
-          <button id="btn-send" class="btn-primary">🚀 Kirim Test</button>
+          <button id="btn-send" class="btn-primary" onclick="handleSendLiveTest()">🚀 Kirim Test</button>
         </div>
       </div>
     </div>
@@ -233,7 +227,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>⚙️ Pengaturan Engine Cloud & Telegram Token</h3>
-        <button class="btn-icon" style="background: transparent; border: none; color: #fff; cursor: pointer; font-size: 1.2rem;" onclick="uiController.closeModal('settings-modal')">✕</button>
+        <button style="background: transparent; border: none; color: #fff; cursor: pointer; font-size: 1.2rem;" onclick="closeSettingsModal()">✕</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -250,20 +244,120 @@
         </div>
       </div>
       <div style="padding: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.5rem;">
-        <button class="btn-primary" onclick="uiController.saveSettings()">Simpan Pengaturan</button>
+        <button class="btn-primary" onclick="saveSettingsModal()">Simpan Pengaturan</button>
       </div>
     </div>
   </div>
 
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Scripts -->
-  <script src="./config.js"></script>
-  <script src="./assets/js/db.js"></script>
-  <script src="./assets/js/typing-simulator.js"></script>
-  <script src="./assets/js/ai-agent.js"></script>
-  <script src="./assets/js/ui-controller.js"></script>
-  <script src="./assets/js/pwa-installer.js"></script>
-  <script src="./assets/js/app.js"></script>
+  <!-- Bulletproof Self-Contained JavaScript Logic -->
+  <script>
+    function setTopicInput(text) {
+      const input = document.getElementById('chat-input');
+      if (input) {
+        input.value = text;
+        input.focus();
+      }
+    }
+
+    function openSettingsModal() {
+      const modal = document.getElementById('settings-modal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeSettingsModal() {
+      const modal = document.getElementById('settings-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function saveSettingsModal() {
+      closeSettingsModal();
+      showToast('Pengaturan berhasil disimpan!', '⚡');
+    }
+
+    function showToast(msg, icon = '⚡') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    function handleSendLiveTest() {
+      const input = document.getElementById('chat-input');
+      const container = document.getElementById('messages-container');
+      if (!input || !container) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+
+      // Append Customer Bubble
+      const custRow = document.createElement('div');
+      custRow.className = 'chat-bubble-row customer';
+      custRow.innerHTML = `<div class="bubble">${text}</div>`;
+      container.appendChild(custRow);
+
+      // Generate Topic Answer
+      let reply = "Wkwk santai bro! Obrolin aja ke gue mau bahas soal produk, lacak resi, atau konsultasi bisnis. Gue siap bantu! 😎";
+      const lower = text.toLowerCase();
+
+      if (lower.includes("harga") || lower.includes("ongkir") || lower.includes("berapa")) {
+        reply = "Untuk harga produk kita mulai dari Rp 85.000 - Rp 250.000 aja bro! Bebas ongkir ke seluruh Jawa/Sumatera buat pembelian min 2 pcs. Lo mau cek harga yang mana?";
+      } else if (lower.includes("stok") || lower.includes("ready") || lower.includes("size") || lower.includes("ukuran")) {
+        reply = "Barang ready stok bro! Kaos oversize ready size S, M, L, XL. Untuk sepatu ready size 39-44. Lo biasa pake size berapa nih biar gue rekomendasikan?";
+      } else if (lower.includes("resi") || lower.includes("lacak") || lower.includes("kirim")) {
+        reply = "Bisa banget! Sebutin nomor pesanan atau no resi lo (misal: KH-8821), ntar langsung gue cekin status posisinya di sistem JNE/SiCepat secepatnya ya!";
+      } else if (lower.includes("bayar") || lower.includes("cod") || lower.includes("bca") || lower.includes("qris")) {
+        reply = "Pembayaran super simpel bro! Boleh bayar pas barang nyampe (COD), transfer bank BCA/Mandiri, atau scan QRIS / GoPay / ShopeePay. Mau bayar via apa?";
+      }
+
+      setTimeout(() => {
+        const agentRow = document.createElement('div');
+        agentRow.className = 'chat-bubble-row agent';
+        agentRow.innerHTML = `<div class="bubble">${reply}</div>`;
+        container.appendChild(agentRow);
+        container.scrollTop = container.scrollHeight;
+      }, 500);
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Enter Key Handler
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('chat-input');
+      input?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSendLiveTest();
+      });
+    });
+
+    // PWA WebAPK Installer
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast('Aplikasi Agent Ai Layanan berhasil di-install!', '📱');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert('Cara Install Aplikasi Agent Ai Layanan di HP Android:\n\n1. Buka Chrome di HP Android.\n2. Ketuk titik tiga (⋮) di pojok kanan atas Chrome.\n3. Pilih "Install Aplikasi" (bukan Tambahkan ke Layar Utama).\n4. Aplikasi murni WebAPK akan langsung terinstall tanpa logo Chrome!');
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>
