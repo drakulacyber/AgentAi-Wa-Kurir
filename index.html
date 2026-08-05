@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang Jago - Human-Like AI Customer Service Agent</title>
+  <meta name="description" content="Aplikasi PWA AI Agent Customer Service ramah, santuy, paham bahasa gaul, dan anti-detection dengan Gemini API 100% Gratis!">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%237c3aed'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='50' fill='white'>🤖</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="logo-badge">🤖</div>
+      <div class="brand-info">
+        <h1>Bang Jago AI CS</h1>
+        <p>
+          <span class="agent-status-badge">
+            <span class="status-dot"></span> Online & Ready
+          </span>
+          <span style="opacity: 0.5;">|</span>
+          <span id="active-api-provider-badge" style="color: var(--accent-glow); font-weight: 600;">Gemini 1.5 Flash (Free API)</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btn-pwa-install" class="btn-primary-sm" onclick="installPWA()" style="display: none;">
+        <span>📱</span> Install PWA
+      </button>
+      <button class="btn-icon" onclick="uiController.openModal('settings-modal')" title="Pengaturan Persona & Engine">
+        ⚙️
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Left Sidebar: Customer Inbox -->
+    <aside class="sidebar-left" id="sidebar-left">
+      <div class="sidebar-header">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="search-customers" placeholder="Cari nama / pesan customer...">
+        </div>
+        <div class="filter-tabs">
+          <button class="tab-btn active" data-filter="all">Semua</button>
+          <button class="tab-btn" data-filter="unread">Belum Dibaca</button>
+          <button class="tab-btn" data-filter="priority">Prioritas ⚡</button>
+        </div>
+      </div>
+
+      <div class="customer-list" id="customer-list-container">
+        <!-- Rendered via JS -->
+      </div>
+    </aside>
+
+    <!-- Center Section: Chat Workspace -->
+    <section class="chat-area">
+      <!-- Active Chat Header -->
+      <div class="chat-header">
+        <div class="active-user-info">
+          <div class="active-user-meta">
+            <h2 id="active-customer-name">Budi Santoso</h2>
+            <p id="active-customer-mood">Mood: Senang 😊</p>
+          </div>
+        </div>
+
+        <div class="chat-header-actions">
+          <div class="override-pill" title="Aktifkan untuk mengambil alih chat secara manual">
+            <span id="override-status-text" style="color: var(--accent-glow);">AI Auto Mode</span>
+            <label class="switch">
+              <input type="checkbox" id="manual-override-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="messages-container" id="messages-container">
+        <!-- Chat bubbles rendered via JS -->
+      </div>
+
+      <!-- Typing Indicator Box -->
+      <div class="typing-indicator-box" id="typing-indicator-box">
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="typing-text"><strong id="typing-agent-name">Bang Jago (AI CS)</strong> sedang mengetik balasan...</span>
+        <button class="skip-delay-btn" id="btn-skip-delay" title="Lewati delay untuk langsung tampilkan balasan">⚡ Kirim Langsung</button>
+      </div>
+
+      <!-- Quick Reply Templates Bar -->
+      <div class="quick-replies-bar">
+        <div class="quick-chip">Woi bos, baju oversize hitam yang L masih ready ga?</div>
+        <div class="quick-chip">Paketan gue kok dari kemarin belum nyampe2 ya?!</div>
+        <div class="quick-chip">Bisa bayar pake COD atau QRIS ga bro?</div>
+        <div class="quick-chip">Ada kode promo atau diskon buat pembeli baru ga?</div>
+        <div class="quick-chip">Garansi retur kalo baju cacat gimana?</div>
+      </div>
+
+      <!-- Bottom Chat Input Bar -->
+      <div class="chat-input-container">
+        <div class="input-box-wrapper">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Tulis balasan atau simulasikan pesan customer..." autocomplete="off">
+          <button id="btn-send" class="btn-send" title="Kirim Pesan">
+            🚀
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Sidebar: AI Brain & Context Memory -->
+    <aside class="sidebar-right" id="sidebar-right">
+
+      <!-- Confidence Score Card -->
+      <div class="panel-card">
+        <div class="panel-card-title">
+          <span>AI Confidence Score</span>
+          <span>🧠</span>
+        </div>
+        <div class="confidence-gauge-container">
+          <div class="gauge-circle" id="confidence-circle">
+            <div class="gauge-inner" id="confidence-value">96%</div>
+          </div>
+          <div class="gauge-info">
+            <p>Akurasi Jawaban Tinggi</p>
+            <span>Gemini API / Hybrid Knowledge</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Suggestions -->
+      <div class="panel-card">
+        <div class="panel-card-title">
+          <span>Smart Suggestions (3 Opsi)</span>
+          <span>🔥</span>
+        </div>
+        <div class="suggestion-list" id="smart-suggestions-list">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Context Memory Viewer -->
+      <div class="panel-card">
+        <div class="panel-card-title">
+          <span>Context Memory Viewer</span>
+          <span>🗿</span>
+        </div>
+        <div class="memory-grid">
+          <div class="memory-row">
+            <span class="memory-label">Nama Customer:</span>
+            <span class="memory-val" id="mem-name">Budi Santoso</span>
+          </div>
+          <div class="memory-row">
+            <span class="memory-label">No. Telepon:</span>
+            <span class="memory-val" id="mem-phone">08123456789</span>
+          </div>
+          <div class="memory-row">
+            <span class="memory-label">Topik Utama:</span>
+            <span class="memory-val" id="mem-topic">Tanya Stok Sepatu</span>
+          </div>
+          <div class="memory-row">
+            <span class="memory-label">Masalah Pending:</span>
+            <span class="memory-val" id="mem-unresolved" style="color: var(--warning);">Ingin pesan size L</span>
+          </div>
+          <div class="memory-row">
+            <span class="memory-label">Catatan Khusus:</span>
+            <span class="memory-val" id="mem-notes">Pelanggan lama</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- Settings & Persona Customization Modal -->
+  <div class="modal-backdrop" id="settings-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>⚙️ Pengaturan Persona & API Key Gratisan</h3>
+        <button class="btn-icon" onclick="uiController.closeModal('settings-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nama AI CS Agent:</label>
+          <input type="text" id="setting-agent-name" class="form-control" value="Bang Jago">
+        </div>
+        <div class="form-group">
+          <label>Nama Bisnis / Brand:</label>
+          <input type="text" id="setting-business-name" class="form-control" value="Jualan Sepatu Keren & Apparel">
+        </div>
+        <div class="form-group">
+          <label>Pilih AI Provider (Mode Gratisan):</label>
+          <select id="setting-api-provider" class="form-control">
+            <option value="auto">🔥 Auto Fallback (Gemini -> Groq -> Local)</option>
+            <option value="gemini">Google Gemini API (1.500 req/hari Gratis)</option>
+            <option value="groq">Groq API (Llama 3 - Fast)</option>
+            <option value="local">Local Hybrid Engine (Offline / Multi-rule)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Google Gemini API Key (Gratis di aistudio.google.com):</label>
+          <input type="password" id="setting-gemini-key" class="form-control" placeholder="AIzaSy...">
+        </div>
+        <div class="form-group">
+          <label>Groq API Key (Opsional / Cadangan di console.groq.com):</label>
+          <input type="password" id="setting-groq-key" class="form-control" placeholder="gsk_...">
+        </div>
+        <div class="form-group">
+          <label>Gaya Bahasa / Persona Switcher:</label>
+          <select id="setting-persona-mode" class="form-control">
+            <option value="santuy">Santuy & Ramah (wkwk, bro/sis, santai)</option>
+            <option value="kasual">Kasual & Akrab (halo, tenang aja, aku bantu)</option>
+            <option value="gaul">Gaul & Lo-Gue (bray, buset, kalem)</option>
+            <option value="logue">Lo-Gue Natural (gue paham bgt, lo tenang)</option>
+            <option value="formil">Formil & Sopan (Selamat pagi/siang, mohon maaf)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" id="setting-response-cache" checked> Aktifkan Response Caching (Hemat Kuota API)</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" id="setting-typos"> Aktifkan Typo Natural & Singkatan (yg, bgt, ttp)</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" id="setting-typing-delay" checked> Aktifkan Simulasi Typing Delay Human-Like</label>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" id="setting-sound" checked> Efek Suara Notifikasi (Audio Synthesis)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-icon" style="width: auto; padding: 0 1rem; font-size: 0.85rem;" onclick="uiController.closeModal('settings-modal')">Batal</button>
+        <button class="btn-primary-sm" onclick="uiController.saveSettings()">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="assets/js/db.js"></script>
+  <script src="assets/js/typing-simulator.js"></script>
+  <script src="assets/js/ai-agent.js"></script>
+  <script src="assets/js/ui-controller.js"></script>
+  <script src="assets/js/pwa-installer.js"></script>
+  <script src="assets/js/app.js"></script>
+
+</body>
+</html>

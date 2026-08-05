@@ -1,0 +1,21 @@
+{
+  "name": "agent-cs-gratisan",
+  "version": "1.0.0",
+  "description": "Human-Like AI Customer Service Agent Gratisan PWA & Multi-channel Bot",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx http-server -p 8085",
+    "bot:wa": "node whatsapp-bot.js",
+    "bot:telegram": "node telegram-bot.js",
+    "deploy:worker": "npx wrangler deploy"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.14.0",
+    "@whiskeysockets/baileys": "^6.7.8",
+    "dotenv": "^16.4.5",
+    "pino": "^9.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.0"
+  }
+}
