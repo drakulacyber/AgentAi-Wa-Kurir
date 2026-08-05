@@ -223,8 +223,16 @@
     .panel-card-title { font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; justify-content: space-between; }
 
     .integrations-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2.5rem 0; text-align: center; }
-    .integrations-grid { display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.25rem; }
-    .integration-item { display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); padding: 0.6rem 1.25rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 600; }
+    .integrations-grid { display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .integration-item {
+      display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card);
+      border: 1px solid var(--border); padding: 0.7rem 1.4rem; border-radius: var(--radius-full);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+    }
+    .integration-item:hover {
+      border-color: var(--accent-glow); background: rgba(16, 185, 129, 0.15);
+      transform: translateY(-3px); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);
+    }
 
     .metrics-section { max-width: 1200px; margin: 4rem auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; padding: 0 2.5rem; }
     .metric-card { background: var(--bg-card); border: 1px solid var(--border); padding: 2rem 1.5rem; border-radius: var(--radius-lg); text-align: center; transition: var(--transition); }
@@ -332,16 +340,16 @@
     </div>
   </section>
 
-  <!-- Integrations Section -->
+  <!-- Interactive Integrations Section -->
   <section class="integrations-bar" id="integrasi">
-    <p style="font-size: 0.88rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Terintegrasi dengan berbagai platform</p>
+    <p style="font-size: 0.88rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Terintegrasi dengan berbagai platform (Klik untuk Kelola / Atur):</p>
     <div class="integrations-grid">
-      <div class="integration-item"><span>💬</span> WhatsApp Business API</div>
-      <div class="integration-item"><span>✈️</span> Telegram Bot API</div>
-      <div class="integration-item"><span>📊</span> CRM System</div>
-      <div class="integration-item"><span>🛒</span> E-Commerce Platform</div>
-      <div class="integration-item"><span>📈</span> Google Sheets & Database</div>
-      <div class="integration-item"><span>⚙️</span> Custom API</div>
+      <div class="integration-item" onclick="uiController.handleIntegrationClick('wa')"><span>💬</span> WhatsApp Business API</div>
+      <div class="integration-item" onclick="uiController.handleIntegrationClick('telegram')"><span>✈️</span> Telegram Bot API</div>
+      <div class="integration-item" onclick="uiController.handleIntegrationClick('crm')"><span>📊</span> CRM System</div>
+      <div class="integration-item" onclick="uiController.handleIntegrationClick('ecommerce')"><span>🛒</span> E-Commerce Platform</div>
+      <div class="integration-item" onclick="uiController.handleIntegrationClick('database')"><span>📈</span> Google Sheets & Database</div>
+      <div class="integration-item" onclick="uiController.handleIntegrationClick('api')"><span>⚙️</span> Custom API</div>
     </div>
   </section>
 
@@ -497,7 +505,7 @@
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>⚙️ Pengaturan Engine & Telegram Bot</h3>
+        <h3>⚙️ Pengaturan Engine & Platform Integrasi</h3>
         <button class="btn-icon" onclick="uiController.closeModal('settings-modal')">✕</button>
       </div>
       <div class="modal-body">
