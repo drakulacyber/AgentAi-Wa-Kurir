@@ -3,128 +3,168 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Ai Layanan - Smart Customer Service PWA</title>
-  <meta name="description" content="Aplikasi PWA Agent Ai Layanan Customer Service ramah, santuy, paham bahasa gaul, dan anti-detection dengan Gemini API & Telegram Bot 100% Gratis!">
+  <title>Agent Ai Layanan - 3D Motion AI WhatsApp & Telegram Service</title>
+  <meta name="description" content="Layanan WhatsApp & Telegram Lebih Cerdas dengan AI Agent. Automasi chat, balas pelanggan 24/7, kelola leads, dan tingkatkan penjualan!">
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#7c3aed">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%237c3aed'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='50' fill='white'>🤖</text></svg>">
+  <meta name="theme-color" content="#10b981">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%2310b981'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='50' fill='white'>🤖</text></svg>">
   
   <!-- External Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/responsive.css">
 
-  <!-- Embedded Self-Contained Design System -->
+  <!-- Embedded Self-Contained 3D Motion Design System (Guarantees zero-breakage) -->
   <style>
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #13131a;
-      --bg-card: #1a1a24;
-      --accent: #7c3aed;
-      --accent-glow: #a78bfa;
-      --text-primary: #e2e8f0;
+      --bg-primary: #080c14;
+      --bg-secondary: #0f172a;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --accent: #10b981;
+      --accent-glow: #34d399;
+      --accent-dark: #059669;
+      --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
-      --border: #1e1e2e;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --glass: rgba(26, 26, 36, 0.85);
-      --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.25);
+      --border: rgba(16, 185, 129, 0.25);
+      --glass: rgba(15, 23, 42, 0.85);
+      --shadow-glow: 0 0 35px rgba(16, 185, 129, 0.3);
       --radius-sm: 8px;
       --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-lg: 24px;
       --radius-full: 9999px;
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       background-color: var(--bg-primary);
       color: var(--text-primary);
-      height: 100vh; width: 100vw;
-      overflow: hidden;
-      display: flex; flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(5, 150, 105, 0.12) 0%, transparent 45%);
     }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-full); }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    @keyframes float3D {
+      0%, 100% { transform: translateY(0px) rotate3d(1, 1, 0, 0deg); }
+      50% { transform: translateY(-12px) rotate3d(1, 1, 0, 6deg); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); }
+      50% { box-shadow: 0 0 50px rgba(52, 211, 153, 0.6); }
+    }
 
     .app-header {
-      height: 64px; background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
+      height: 72px; background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.5rem; z-index: 100; backdrop-filter: blur(10px);
+      padding: 0 2.5rem; position: sticky; top: 0; z-index: 1000;
     }
 
-    .brand-container { display: flex; align-items: center; gap: 0.85rem; }
+    .brand-container { display: flex; align-items: center; gap: 1rem; }
     .logo-badge {
-      width: 42px; height: 42px; border-radius: var(--radius-md);
-      background: linear-gradient(135deg, var(--accent), #4c1d95);
+      width: 46px; height: 46px; border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; box-shadow: var(--shadow-glow); position: relative;
+      font-size: 1.5rem; box-shadow: var(--shadow-glow); animation: pulseGlow 4s infinite ease-in-out;
+      border: 1px solid rgba(52, 211, 153, 0.4);
     }
 
     .brand-info h1 {
-      font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700;
-      background: linear-gradient(90deg, #fff, var(--accent-glow));
+      font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800;
+      background: linear-gradient(90deg, #ffffff, var(--accent-glow));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    .brand-info p { font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.35rem; }
-    .agent-status-badge {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      padding: 0.2rem 0.6rem; border-radius: var(--radius-full);
-      font-size: 0.72rem; font-weight: 600;
-      background: rgba(16, 185, 129, 0.1); color: var(--success);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-    }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-glow); }
 
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background-color: var(--success); box-shadow: 0 0 8px var(--success);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-
-    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
-    .btn-icon {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--text-primary); width: 38px; height: 38px;
-      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: var(--transition); font-size: 1.1rem;
-    }
-    .btn-icon:hover { background: rgba(124, 58, 237, 0.2); border-color: var(--accent-glow); transform: translateY(-1px); }
-
-    .btn-primary-sm {
-      background: linear-gradient(135deg, var(--accent), #5b21b6);
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
       border: 1px solid var(--accent-glow); color: #fff;
-      padding: 0.45rem 1rem; border-radius: var(--radius-md);
-      font-size: 0.85rem; font-weight: 600; cursor: pointer;
-      display: flex; align-items: center; gap: 0.4rem; box-shadow: var(--shadow-glow);
-      transition: var(--transition);
+      padding: 0.65rem 1.5rem; border-radius: var(--radius-full);
+      font-size: 0.9rem; font-weight: 700; cursor: pointer;
+      box-shadow: var(--shadow-glow); transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    .btn-primary-sm:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(124, 58, 237, 0.4); }
+    .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 35px rgba(16, 185, 129, 0.6); }
 
-    .app-container {
-      flex: 1; display: grid; grid-template-columns: 320px 1fr 340px;
-      height: calc(100vh - 64px); overflow: hidden;
+    .btn-outline {
+      background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border);
+      color: var(--text-primary); padding: 0.65rem 1.5rem; border-radius: var(--radius-full);
+      font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+    }
+    .btn-outline:hover { border-color: var(--accent-glow); background: rgba(16, 185, 129, 0.1); }
+
+    .hero-section {
+      padding: 4rem 2.5rem 3rem; display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem; max-width: 1400px; margin: 0 auto; align-items: center;
     }
 
-    .sidebar-left {
-      background: var(--bg-secondary); border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; overflow: hidden;
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--accent-glow); padding: 0.35rem 0.9rem; border-radius: var(--radius-full);
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 1.25rem;
     }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif; font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 1.25rem;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; max-width: 540px; }
+
+    .feature-pills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 520px; }
+    .pill-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 0.85rem 1.1rem; border-radius: var(--radius-md);
+      display: flex; align-items: center; gap: 0.85rem; backdrop-filter: blur(10px); transition: var(--transition);
+    }
+    .pill-card:hover { border-color: var(--accent-glow); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
+
+    .pill-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(16, 185, 129, 0.18); display: flex; align-items: center; justify-content: center;
+      color: var(--accent-glow); font-size: 1.1rem;
+    }
+
+    .robot-3d-card {
+      width: 100%; max-width: 460px; height: 500px; background: var(--glass);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      position: relative; overflow: hidden; box-shadow: var(--shadow-glow);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 2rem; backdrop-filter: blur(16px); animation: float3D 6s infinite ease-in-out;
+    }
+
+    .robot-avatar-3d {
+      width: 170px; height: 170px; border-radius: 50%;
+      background: radial-gradient(circle, var(--accent) 0%, #064e3b 80%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5.5rem; box-shadow: 0 0 50px rgba(16, 185, 129, 0.6); margin-bottom: 1.5rem; position: relative;
+    }
+
+    .workspace-section { max-width: 1400px; margin: 2rem auto 4rem; padding: 0 2.5rem; }
+    .workspace-title-box { text-align: center; margin-bottom: 2rem; }
+    .workspace-title-box h2 { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; }
+
+    .workspace-container {
+      display: grid; grid-template-columns: 320px 1fr 340px; height: 650px;
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-glow); backdrop-filter: blur(16px);
+    }
+
+    .sidebar-left { background: var(--bg-secondary); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
     .sidebar-header { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem; }
     .search-box { position: relative; width: 100%; }
     .search-box input {
@@ -132,7 +172,7 @@
       padding: 0.55rem 0.85rem 0.55rem 2.2rem; border-radius: var(--radius-md);
       color: var(--text-primary); font-size: 0.85rem; outline: none; transition: var(--transition);
     }
-    .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(124, 58, 237, 0.2); }
+    .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
     .search-box span { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
 
     .filter-tabs { display: flex; gap: 0.4rem; background: var(--bg-primary); padding: 0.25rem; border-radius: var(--radius-md); border: 1px solid var(--border); }
@@ -150,294 +190,314 @@
       cursor: pointer; transition: var(--transition); position: relative;
     }
     .customer-card:hover { background: var(--bg-card); }
-    .customer-card.active { background: var(--glass); border-color: var(--accent); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); }
+    .customer-card.active { background: rgba(16, 185, 129, 0.12); border-color: var(--accent); }
 
     .avatar-wrapper {
       position: relative; width: 44px; height: 44px; border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, var(--accent));
+      background: linear-gradient(135deg, #10b981, #047857);
       display: flex; align-items: center; justify-content: center;
       font-weight: 700; color: #fff; font-size: 1.1rem; flex-shrink: 0;
     }
-    .mood-badge {
-      position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px;
-      border-radius: 50%; background: var(--bg-card); border: 2px solid var(--bg-secondary);
-      display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
-    }
-    .customer-info { flex: 1; min-width: 0; }
-    .customer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }
-    .customer-name { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .chat-time { font-size: 0.7rem; color: var(--text-secondary); }
-    .customer-bottom { display: flex; justify-content: space-between; align-items: center; }
-    .last-msg { font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
-    .unread-badge { background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: var(--radius-full); }
 
     .chat-area { background: var(--bg-primary); display: flex; flex-direction: column; height: 100%; position: relative; }
     .chat-header { height: 60px; background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; }
     .active-user-meta h2 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 600; }
     .active-user-meta p { font-size: 0.75rem; color: var(--text-secondary); }
 
-    .override-pill { display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border); padding: 0.3rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; }
-    .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; inset: 0; background-color: var(--border); transition: .3s; border-radius: 18px; }
-    .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; }
-    input:checked + .slider { background-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(16px); }
-
     .messages-container { flex: 1; padding: 1.25rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
     .chat-bubble-row { display: flex; flex-direction: column; max-width: 75%; }
     .chat-bubble-row.customer { align-self: flex-start; }
     .chat-bubble-row.agent { align-self: flex-end; }
-    .bubble-sender { font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.2rem; padding: 0 0.4rem; }
-    .chat-bubble-row.agent .bubble-sender { text-align: right; }
     .bubble { padding: 0.85rem 1.1rem; border-radius: var(--radius-lg); font-size: 0.9rem; line-height: 1.45; word-wrap: break-word; }
-    .chat-bubble-row.customer .bubble { background: var(--bg-card); border: 1px solid var(--border); border-top-left-radius: 4px; color: var(--text-primary); }
-    .chat-bubble-row.agent .bubble { background: linear-gradient(135deg, var(--accent), #5b21b6); border-top-right-radius: 4px; color: #fff; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2); }
-    .bubble-meta { display: flex; align-items: center; justify-content: flex-end; gap: 0.3rem; margin-top: 0.35rem; font-size: 0.68rem; opacity: 0.75; }
-    .read-ticks { color: #60a5fa; }
-
-    .typing-indicator-box { display: none; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border); padding: 0.6rem 1rem; border-radius: var(--radius-lg); width: fit-content; margin-left: 0.5rem; }
-    .typing-dots { display: flex; align-items: center; gap: 4px; }
-    .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background-color: var(--accent-glow); animation: typingBounce 1.4s infinite ease-in-out both; }
-    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-    @keyframes typingBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-    .typing-text { font-size: 0.78rem; color: var(--text-secondary); }
-    .skip-delay-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent-glow); font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; margin-left: 0.5rem; }
-    .skip-delay-btn:hover { background: var(--accent); color: #fff; }
-
-    .quick-replies-bar { padding: 0.5rem 1rem; background: var(--bg-secondary); border-top: 1px solid var(--border); display: flex; gap: 0.5rem; overflow-x: auto; white-space: nowrap; }
-    .quick-chip { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
-    .quick-chip:hover { border-color: var(--accent-glow); color: var(--text-primary); background: rgba(124, 58, 237, 0.15); }
+    .chat-bubble-row.customer .bubble { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); }
+    .chat-bubble-row.agent .bubble { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25); }
 
     .chat-input-container { padding: 0.75rem 1.25rem 1rem; background: var(--bg-secondary); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.5rem; }
-    .input-box-wrapper { display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0.4rem 0.6rem 0.4rem 1rem; transition: var(--transition); }
-    .input-box-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 15px rgba(124, 58, 237, 0.2); }
+    .input-box-wrapper { display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0.4rem 0.6rem 0.4rem 1rem; }
+    .input-box-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
     .chat-input { flex: 1; background: transparent; border: none; color: var(--text-primary); font-size: 0.9rem; outline: none; }
-    .btn-send { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #5b21b6); border: none; color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: var(--transition); flex-shrink: 0; }
-    .btn-send:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(124, 58, 237, 0.5); }
+    .btn-send { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border: none; color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); }
 
     .sidebar-right { background: var(--bg-secondary); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; padding: 1rem; gap: 1rem; }
     .panel-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
     .panel-card-title { font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; justify-content: space-between; }
 
-    .confidence-gauge-container { display: flex; align-items: center; gap: 1rem; }
-    .gauge-circle { width: 64px; height: 64px; border-radius: 50%; background: conic-gradient(var(--accent) 0% 96%, var(--border) 96% 100%); display: flex; align-items: center; justify-content: center; }
-    .gauge-inner { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--accent-glow); }
-    .gauge-info p { font-size: 0.82rem; color: var(--text-primary); font-weight: 600; }
-    .gauge-info span { font-size: 0.72rem; color: var(--text-secondary); }
+    .integrations-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2.5rem 0; text-align: center; }
+    .integrations-grid { display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .integration-item { display: flex; align-items: center; gap: 0.6rem; background: var(--bg-card); border: 1px solid var(--border); padding: 0.6rem 1.25rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 600; }
 
-    .suggestion-list { display: flex; flex-direction: column; gap: 0.5rem; }
-    .suggestion-item { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.6rem 0.8rem; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; gap: 0.25rem; }
-    .suggestion-item:hover { border-color: var(--accent); background: rgba(124, 58, 237, 0.1); }
-    .suggestion-header { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; }
-    .suggestion-type { color: var(--accent-glow); }
-    .suggestion-conf { color: var(--success); }
-    .suggestion-text { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.3; }
+    .metrics-section { max-width: 1200px; margin: 4rem auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; padding: 0 2.5rem; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); padding: 2rem 1.5rem; border-radius: var(--radius-lg); text-align: center; transition: var(--transition); }
+    .metric-card:hover { transform: translateY(-5px); border-color: var(--accent-glow); box-shadow: var(--shadow-glow); }
+    .metric-number { font-family: 'Outfit', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--accent-glow); margin-bottom: 0.25rem; }
+    .metric-label { font-size: 0.85rem; color: var(--text-secondary); }
 
-    .memory-grid { display: flex; flex-direction: column; gap: 0.6rem; }
-    .memory-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding-bottom: 0.4rem; border-bottom: 1px dashed var(--border); }
-    .memory-label { color: var(--text-secondary); }
-    .memory-val { font-weight: 600; color: var(--text-primary); text-align: right; }
-
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1rem; }
     .modal-backdrop.active { display: flex; }
     .modal-content { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
     .modal-header { padding: 1.2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .modal-header h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; }
     .modal-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; }
     .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
     .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
     .form-control { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); padding: 0.6rem 0.85rem; border-radius: var(--radius-md); font-size: 0.85rem; outline: none; }
     .form-control:focus { border-color: var(--accent); }
     .modal-footer { padding: 1rem 1.2rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.5rem; }
-
-    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 0.5rem; }
+    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 0.5rem; }
     .toast { background: var(--bg-card); border: 1px solid var(--accent); color: var(--text-primary); padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-size: 0.85rem; box-shadow: 0 10px 25px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 0.6rem; }
-
-    @media (max-width: 850px) {
-      .app-container { grid-template-columns: 1fr; }
-      .sidebar-left, .sidebar-right { display: none; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- App Header -->
+  <!-- App Header Navigation -->
   <header class="app-header">
     <div class="brand-container">
       <div class="logo-badge">🤖</div>
       <div class="brand-info">
-        <h1>Agent Ai Layanan</h1>
-        <p>
-          <span class="agent-status-badge">
-            <span class="status-dot"></span> Online & Ready
-          </span>
-          <span style="opacity: 0.5;">|</span>
-          <span id="active-api-provider-badge" style="color: var(--accent-glow); font-weight: 600;">Gemini 1.5 Flash (Free API)</span>
-        </p>
+        <h1>AI AGENT</h1>
+        <p style="font-size: 0.72rem; color: var(--accent-glow); font-weight: 600;">WHATSAPP & TELEGRAM SERVICE</p>
       </div>
     </div>
 
-    <div class="header-actions">
-      <button id="btn-pwa-install" class="btn-primary-sm" onclick="installPWA()" style="display: none;">
-        <span>📱</span> Install PWA
-      </button>
-      <button class="btn-icon" onclick="uiController.openModal('settings-modal')" title="Pengaturan Persona & Engine">
-        ⚙️
-      </button>
+    <ul class="nav-links">
+      <li><a href="#beranda" class="active">Beranda</a></li>
+      <li><a href="#fitur">Fitur</a></li>
+      <li><a href="#workspace">Workspace CS</a></li>
+      <li><a href="#integrasi">Integrasi</a></li>
+    </ul>
+
+    <div class="header-actions" style="display: flex; gap: 0.75rem; align-items: center;">
+      <button class="btn-outline" onclick="uiController.openModal('settings-modal')">⚙️ Pengaturan Engine</button>
+      <button class="btn-primary" onclick="installPWA()"><span>💬</span> Coba Gratis</button>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="app-container">
-
-    <!-- Left Sidebar: Customer Inbox -->
-    <aside class="sidebar-left" id="sidebar-left">
-      <div class="sidebar-header">
-        <div class="search-box">
-          <span>🔍</span>
-          <input type="text" id="search-customers" placeholder="Cari nama / pesan customer...">
-        </div>
-        <div class="filter-tabs">
-          <button class="tab-btn active" data-filter="all">Semua</button>
-          <button class="tab-btn" data-filter="unread">Belum Dibaca</button>
-          <button class="tab-btn" data-filter="priority">Prioritas ⚡</button>
-        </div>
+  <!-- Hero Section with 3D Motion Art Visual -->
+  <section class="hero-section" id="beranda">
+    <div class="hero-content">
+      <div class="hero-tag"><span>🤖</span> AI AGENT WHATSAPP & TELEGRAM</div>
+      <h1 class="hero-title">Layanan WhatsApp Lebih Cerdas dengan <span>AI Agent</span></h1>
+      <p class="hero-subtitle">Automasi chat, balas pelanggan 24/7, kelola leads, dan tingkatkan penjualan melalui WhatsApp & Telegram dengan kecerdasan buatan terdepan.</p>
+      
+      <div class="hero-actions">
+        <a href="#workspace" class="btn-primary">Mulai Sekarang ➔</a>
+        <a href="#workspace" class="btn-outline">Lihat Demo ⏯</a>
       </div>
 
-      <div class="customer-list" id="customer-list-container">
-        <!-- Rendered via JS -->
-      </div>
-    </aside>
-
-    <!-- Center Section: Chat Workspace -->
-    <section class="chat-area">
-      <!-- Active Chat Header -->
-      <div class="chat-header">
-        <div class="active-user-info">
-          <div class="active-user-meta">
-            <h2 id="active-customer-name">Budi Santoso</h2>
-            <p id="active-customer-mood">Mood: Senang 😊</p>
+      <div class="feature-pills">
+        <div class="pill-card">
+          <div class="pill-icon">🟢</div>
+          <div class="pill-text">
+            <h4>24/7 Aktif</h4>
+            <p>AI siap melayani kapan saja</p>
           </div>
         </div>
-
-        <div class="chat-header-actions">
-          <div class="override-pill" title="Aktifkan untuk mengambil alih chat secara manual">
-            <span id="override-status-text" style="color: var(--accent-glow);">AI Auto Mode</span>
-            <label class="switch">
-              <input type="checkbox" id="manual-override-toggle">
-              <span class="slider"></span>
-            </label>
+        <div class="pill-card">
+          <div class="pill-icon">⚡</div>
+          <div class="pill-text">
+            <h4>Respon Instan</h4>
+            <p>Balasan cepat hitungan detik</p>
           </div>
         </div>
-      </div>
-
-      <!-- Messages Stream -->
-      <div class="messages-container" id="messages-container">
-        <!-- Chat bubbles rendered via JS -->
-      </div>
-
-      <!-- Typing Indicator Box -->
-      <div class="typing-indicator-box" id="typing-indicator-box">
-        <div class="typing-dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <span class="typing-text"><strong id="typing-agent-name">Agent Ai Layanan</strong> sedang mengetik balasan...</span>
-        <button class="skip-delay-btn" id="btn-skip-delay" title="Lewati delay untuk langsung tampilkan balasan">⚡ Kirim Langsung</button>
-      </div>
-
-      <!-- Quick Reply Templates Bar -->
-      <div class="quick-replies-bar">
-        <div class="quick-chip">Woi bos, barang yang ini masih ready ga?</div>
-        <div class="quick-chip">Paketan gue kok dari kemarin belum nyampe2 ya?!</div>
-        <div class="quick-chip">Bisa bayar pake COD atau QRIS ga bro?</div>
-        <div class="quick-chip">Ada kode promo atau diskon buat pembeli baru ga?</div>
-        <div class="quick-chip">Garansi retur kalo barang cacat gimana?</div>
-      </div>
-
-      <!-- Bottom Chat Input Bar -->
-      <div class="chat-input-container">
-        <div class="input-box-wrapper">
-          <input type="text" id="chat-input" class="chat-input" placeholder="Tulis balasan atau simulasikan pesan customer..." autocomplete="off">
-          <button id="btn-send" class="btn-send" title="Kirim Pesan">
-            🚀
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Right Sidebar: AI Brain & Context Memory -->
-    <aside class="sidebar-right" id="sidebar-right">
-
-      <!-- Confidence Score Card -->
-      <div class="panel-card">
-        <div class="panel-card-title">
-          <span>AI Confidence Score</span>
-          <span>🧠</span>
-        </div>
-        <div class="confidence-gauge-container">
-          <div class="gauge-circle" id="confidence-circle">
-            <div class="gauge-inner" id="confidence-value">96%</div>
+        <div class="pill-card">
+          <div class="pill-icon">📊</div>
+          <div class="pill-text">
+            <h4>Kelola Leads</h4>
+            <p>Otomatis catat & kelola prospek</p>
           </div>
-          <div class="gauge-info">
-            <p>Akurasi Jawaban Tinggi</p>
-            <span>Gemini API / Hybrid Knowledge</span>
+        </div>
+        <div class="pill-card">
+          <div class="pill-icon">🚀</div>
+          <div class="pill-text">
+            <h4>Tingkatkan Sales</h4>
+            <p>Konversi lebih tinggi dengan AI</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Smart Suggestions -->
-      <div class="panel-card">
-        <div class="panel-card-title">
-          <span>Smart Suggestions (3 Opsi)</span>
-          <span>🔥</span>
+    <!-- 3D Motion Robot Art Container -->
+    <div class="hero-3d-visual">
+      <div class="robot-3d-card">
+        <div class="robot-avatar-3d">🤖</div>
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem;">AI Agent Service</h3>
+        <p style="font-size: 0.85rem; color: var(--accent-glow); font-weight: 600;">Status: Online & Ready (Gemini 1.5 Flash)</p>
+
+        <div class="floating-chat-bubble bubble-1">
+          <strong>Customer:</strong> Halo! Saya mau tanya produk terbaru 🛍️
         </div>
-        <div class="suggestion-list" id="smart-suggestions-list">
+        <div class="floating-chat-bubble bubble-2">
+          <strong>AI Agent:</strong> Tentu! Ini beberapa produk hits kita bro ✨
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations Section -->
+  <section class="integrations-bar" id="integrasi">
+    <p style="font-size: 0.88rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Terintegrasi dengan berbagai platform</p>
+    <div class="integrations-grid">
+      <div class="integration-item"><span>💬</span> WhatsApp Business API</div>
+      <div class="integration-item"><span>✈️</span> Telegram Bot API</div>
+      <div class="integration-item"><span>📊</span> CRM System</div>
+      <div class="integration-item"><span>🛒</span> E-Commerce Platform</div>
+      <div class="integration-item"><span>📈</span> Google Sheets & Database</div>
+      <div class="integration-item"><span>⚙️</span> Custom API</div>
+    </div>
+  </section>
+
+  <!-- Interactive Live Workspace Simulator Section -->
+  <section class="workspace-section" id="workspace">
+    <div class="workspace-title-box">
+      <h2>Interactive CS Workspace & Simulator</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">Uji coba balasan AI, emotion detector, dan smart suggestions secara live!</p>
+    </div>
+
+    <div class="workspace-container">
+      <!-- Left Sidebar: Customer Inbox -->
+      <aside class="sidebar-left" id="sidebar-left">
+        <div class="sidebar-header">
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="search-customers" placeholder="Cari nama / pesan customer...">
+          </div>
+          <div class="filter-tabs">
+            <button class="tab-btn active" data-filter="all">Semua</button>
+            <button class="tab-btn" data-filter="unread">Belum Dibaca</button>
+            <button class="tab-btn" data-filter="priority">Prioritas ⚡</button>
+          </div>
+        </div>
+
+        <div class="customer-list" id="customer-list-container">
           <!-- Rendered via JS -->
         </div>
-      </div>
+      </aside>
 
-      <!-- Context Memory Viewer -->
-      <div class="panel-card">
-        <div class="panel-card-title">
-          <span>Context Memory Viewer</span>
-          <span>🗿</span>
-        </div>
-        <div class="memory-grid">
-          <div class="memory-row">
-            <span class="memory-label">Nama Customer:</span>
-            <span class="memory-val" id="mem-name">Budi Santoso</span>
+      <!-- Center Section: Chat Workspace -->
+      <section class="chat-area">
+        <div class="chat-header">
+          <div class="active-user-info">
+            <div class="active-user-meta">
+              <h2 id="active-customer-name">Budi Santoso</h2>
+              <p id="active-customer-mood">Mood: Senang 😊</p>
+            </div>
           </div>
-          <div class="memory-row">
-            <span class="memory-label">No. Telepon:</span>
-            <span class="memory-val" id="mem-phone">08123456789</span>
-          </div>
-          <div class="memory-row">
-            <span class="memory-label">Topik Utama:</span>
-            <span class="memory-val" id="mem-topic">Tanya Produk & Stok</span>
-          </div>
-          <div class="memory-row">
-            <span class="memory-label">Masalah Pending:</span>
-            <span class="memory-val" id="mem-unresolved" style="color: var(--warning);">Ingin pesan item L</span>
-          </div>
-          <div class="memory-row">
-            <span class="memory-label">Catatan Khusus:</span>
-            <span class="memory-val" id="mem-notes">Pelanggan lama</span>
+
+          <div class="chat-header-actions">
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); padding: 0.3rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border);">
+              <span id="override-status-text" style="color: var(--accent-glow);">AI Auto Mode</span>
+              <label class="switch">
+                <input type="checkbox" id="manual-override-toggle">
+                <span class="slider"></span>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
 
-    </aside>
-  </main>
+        <div class="messages-container" id="messages-container">
+          <!-- Chat bubbles rendered via JS -->
+        </div>
 
-  <!-- Settings & Persona Customization Modal -->
+        <div class="typing-indicator-box" id="typing-indicator-box" style="display: none; padding: 0.6rem 1rem; background: var(--bg-card); border-radius: var(--radius-lg); margin-left: 1rem; margin-bottom: 0.5rem; border: 1px solid var(--border); width: fit-content;">
+          <span style="font-size: 0.8rem; color: var(--text-secondary);"><strong id="typing-agent-name">Agent Ai Layanan</strong> sedang mengetik balasan...</span>
+          <button id="btn-skip-delay" style="background: transparent; border: 1px solid var(--accent); color: var(--accent-glow); font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 6px; cursor: pointer; margin-left: 0.5rem;">⚡ Kirim Langsung</button>
+        </div>
+
+        <div style="padding: 0.5rem 1rem; background: var(--bg-secondary); border-top: 1px solid var(--border); display: flex; gap: 0.5rem; overflow-x: auto; white-space: nowrap;">
+          <div class="quick-chip" onclick="document.getElementById('chat-input').value=this.innerText">Woi bos, barang yang ini masih ready ga?</div>
+          <div class="quick-chip" onclick="document.getElementById('chat-input').value=this.innerText">Paketan gue kok dari kemarin belum nyampe2 ya?!</div>
+          <div class="quick-chip" onclick="document.getElementById('chat-input').value=this.innerText">Bisa bayar pake COD atau QRIS ga bro?</div>
+          <div class="quick-chip" onclick="document.getElementById('chat-input').value=this.innerText">Garansi retur kalo barang cacat gimana?</div>
+        </div>
+
+        <div class="chat-input-container">
+          <div class="input-box-wrapper">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Tulis balasan atau simulasikan pesan customer..." autocomplete="off">
+            <button id="btn-send" class="btn-send" title="Kirim Pesan">🚀</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Sidebar: AI Brain & Context Memory -->
+      <aside class="sidebar-right" id="sidebar-right">
+        <div class="panel-card">
+          <div class="panel-card-title">
+            <span>AI Confidence Score</span>
+            <span>🧠</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 58px; height: 58px; border-radius: 50%; background: conic-gradient(var(--accent) 0% 98%, var(--border) 98% 100%); display: flex; align-items: center; justify-content: center;" id="confidence-circle">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; color: var(--accent-glow);" id="confidence-value">98%</div>
+            </div>
+            <div>
+              <p style="font-size: 0.82rem; font-weight: 700;">Akurasi Jawaban Tinggi</p>
+              <span style="font-size: 0.72rem; color: var(--text-secondary);" id="active-api-provider-badge">Gemini 1.5 Flash (Live API)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-card-title">
+            <span>Smart Suggestions (3 Opsi)</span>
+            <span>🔥</span>
+          </div>
+          <div id="smart-suggestions-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-card-title">
+            <span>Context Memory Viewer</span>
+            <span>🗿</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.78rem;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 0.3rem;">
+              <span style="color: var(--text-secondary);">Nama Customer:</span>
+              <strong id="mem-name">Budi Santoso</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 0.3rem;">
+              <span style="color: var(--text-secondary);">No. Telepon:</span>
+              <strong id="mem-phone">08123456789</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 0.3rem;">
+              <span style="color: var(--text-secondary);">Topik Utama:</span>
+              <strong id="mem-topic">Tanya Produk & Stok</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-secondary);">Catatan Khusus:</span>
+              <strong id="mem-notes">Pelanggan lama</strong>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Metrics Section -->
+  <section class="metrics-section">
+    <div class="metric-card">
+      <div class="metric-number">10K+</div>
+      <div class="metric-label">Bisnis Terbantu</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-number">98%</div>
+      <div class="metric-label">Kepuasan Pelanggan</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-number">24/7</div>
+      <div class="metric-label">Layanan Aktif</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-number">3x</div>
+      <div class="metric-label">Peningkatan Penjualan</div>
+    </div>
+  </section>
+
+  <!-- Settings Modal -->
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>⚙️ Pengaturan Persona & Bot Telegram</h3>
+        <h3>⚙️ Pengaturan Engine & Telegram Bot</h3>
         <button class="btn-icon" onclick="uiController.closeModal('settings-modal')">✕</button>
       </div>
       <div class="modal-body">
@@ -462,10 +522,9 @@
           <label>Google Gemini API Key (Gratis di aistudio.google.com):</label>
           <input type="password" id="setting-gemini-key" class="form-control" placeholder="AIzaSy...">
         </div>
-        <div class="form-group" style="background: rgba(124, 58, 237, 0.1); padding: 0.75rem; border-radius: 10px; border: 1px solid var(--accent);">
+        <div class="form-group" style="background: rgba(16, 185, 129, 0.1); padding: 0.75rem; border-radius: 10px; border: 1px solid var(--accent);">
           <label style="color: var(--accent-glow);">✈️ Telegram Bot Token (Dari @BotFather di Telegram):</label>
-          <input type="password" id="setting-telegram-token" class="form-control" placeholder="7123456789:AAFxxx...">
-          <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px;">Dapatkan gratis dari aplikasi Telegram HP Anda via @BotFather. Tanpa terminal!</span>
+          <input type="password" id="setting-telegram-token" class="form-control" placeholder="8530097732:AAFx...">
         </div>
         <div class="form-group">
           <label>Gaya Bahasa / Persona Switcher:</label>
@@ -473,15 +532,11 @@
             <option value="santuy">Santuy & Ramah (wkwk, bro/sis, santai)</option>
             <option value="kasual">Kasual & Akrab (halo, tenang aja, aku bantu)</option>
             <option value="gaul">Gaul & Lo-Gue (bray, buset, kalem)</option>
-            <option value="logue">Lo-Gue Natural (gue paham bgt, lo tenang)</option>
             <option value="formil">Formil & Sopan (Selamat pagi/siang, mohon maaf)</option>
           </select>
         </div>
         <div class="form-group">
           <label><input type="checkbox" id="setting-response-cache" checked> Aktifkan Response Caching (Hemat Kuota API)</label>
-        </div>
-        <div class="form-group">
-          <label><input type="checkbox" id="setting-typos"> Aktifkan Typo Natural & Singkatan (yg, bgt, ttp)</label>
         </div>
         <div class="form-group">
           <label><input type="checkbox" id="setting-typing-delay" checked> Aktifkan Simulasi Typing Delay Human-Like</label>
@@ -492,15 +547,14 @@
       </div>
       <div class="modal-footer">
         <button class="btn-icon" style="width: auto; padding: 0 1rem; font-size: 0.85rem;" onclick="uiController.closeModal('settings-modal')">Batal</button>
-        <button class="btn-primary-sm" onclick="uiController.saveSettings()">Simpan Perubahan</button>
+        <button class="btn-primary" onclick="uiController.saveSettings()">Simpan Perubahan</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Scripts with Explicit Relative Paths -->
+  <!-- Scripts -->
   <script src="./config.js"></script>
   <script src="./assets/js/db.js"></script>
   <script src="./assets/js/typing-simulator.js"></script>
