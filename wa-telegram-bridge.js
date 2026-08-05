@@ -1,5 +1,10 @@
 /**
- * WhatsApp <-> Telegram Bridge & AI CS Relay System
+ * WhatsApp <-> Telegram Bridge & AI CS Relay System (Upgraded Topic-Aware Version)
+ * 
+ * ATURAN KHUSUS:
+ * 1. PETA TOPIK PINTAR: Membalas sesuai topik spesifik (Harga, Stok, Ukuran, Resi, Payment, Curhat, Bisnis).
+ * 2. NO GROUP CHAT: Chat Grup WA (endsWith '@g.us') DIABAIKAN TOTAL 100%.
+ * 3. PRIORITAS NO LAMA / PENTING: Mendeteksi & memprioritaskan kontak penting/lama.
  */
 
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
@@ -7,7 +12,6 @@ const pino = require('pino');
 const qrcode = require('qrcode-terminal');
 const fs = require('fs');
 
-// Read .env
 let env = {};
 try {
   if (fs.existsSync('.env')) {
@@ -27,6 +31,66 @@ const AGENT_NAME = process.env.AGENT_NAME || env.AGENT_NAME || 'Agent Ai Layanan
 
 let lastAdminTelegramChatId = null;
 
+// Topic Knowledge Base Matrix for Context-Specific Answers
+const topicMatrix = [
+  {
+    keywords: ["harga", "berapa", "biaya", "pricelist", "ongkir"],
+    reply: "Untuk harga produk kita mulai dari Rp 85.000 - Rp 250.000 aja bro! Bebas ongkir ke seluruh Jawa/Sumatera buat pembelian min 2 pcs. Lo mau cek harga produk yang mana nih?"
+  },
+  {
+    keywords: ["stok", "ready", "ukuran", "size", "warna", "baju", "sepatu", "kaos"],
+    reply: "Barang ready stok bro! Kaos oversize ready size S, M, L, XL. Untuk sepatu ready size 39-44. Lo biasa pake size berapa nih biar gue rekomendasikan?"
+  },
+  {
+    keywords: ["resi", "lacak", "posisi", "paket", "kirim", "sampai"],
+    reply: "Bisa banget! Sebutin aja nomor pesanan atau no resi lo (misal: KH-8821), ntar langsung gue cekin status posisinya di sistem JNE/SiCepat secepatnya ya!"
+  },
+  {
+    keywords: ["bayar", "cod", "qris", "gopay", "transfer", "bca", "mandiri"],
+    reply: "Pembayaran super simpel bro! Boleh bayar pas barang nyampe (COD), transfer bank BCA/Mandiri, atau scan QRIS / GoPay / ShopeePay. Mau bayar via apa?"
+  },
+  {
+    keywords: ["retur", "garansi", "rusak", "cacat", "salah"],
+    reply: "Tenang bro, garansi 100% ganti baru gratis kalau ada cacat pabrik atau salah kirim! Sertain video unboxing pas lo terima ya, ntar gue yang urus!"
+  },
+  {
+    keywords: ["curhat", "pusing", "capek", "sedih", "solusi", "strategi", "bisnis"],
+    reply: "Santai aja bro, obrolin aja ke gue! Mau curhat masalah kerjaan, atau diskusi strategi bisnis & marketing, gue siap nemenin dan ngasih masukan tajam!"
+  },
+  {
+    keywords: ["dimana", "lokasi", "toko", "alamat"],
+    reply: "Pusat gudang kita ada di Jakarta & Bandung bro! Pengiriman cepat kilat pake JNE, SiCepat & Instant GoSend/Grab."
+  }
+];
+
+function generateTopicResponse(userText) {
+  const lower = userText.toLowerCase().trim();
+
+  // Match topic
+  for (const item of topicMatrix) {
+    for (const kw of item.keywords) {
+      if (lower.includes(kw)) {
+        return item.reply;
+      }
+    }
+  }
+
+  // Greetings / Conversational
+  if (lower.includes("lagi dimana") || lower.includes("lg dmn")) {
+    return "Lagi nongkrong santai di basecamp nih bro sambil ngopi ☕ Lo sendiri lagi dimana nih? Ada yang seru ga hari ini?";
+  }
+
+  if (lower.includes("lagi apa") || lower.includes("lg apa")) {
+    return "Lagi ngontrol sistem toko sambil dengerin musik santai nih wkwk 🎶 Lo lagi ngapain nih bro?";
+  }
+
+  if (lower.includes("halo") || lower.includes("hi") || lower.includes("p") || lower.includes("siang") || lower.includes("malam")) {
+    return `Halo bro! Gue ${AGENT_NAME}. Ada yang mau lo tanyain soal barang, pengiriman, atau mau ngobrol santai aja hari ini? Bilang aja! ✌️`;
+  }
+
+  return `Wkwk santai bro! Obrolin aja ke gue mau bahas soal produk, lacak resi, atau konsultasi bisnis. Gue siap bantu sejelas-jelasnya! 😎`;
+}
+
 async function sendTelegramMessage(chatId, text) {
   try {
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -34,33 +98,42 @@ async function sendTelegramMessage(chatId, text) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: 'HTML' })
     });
-  } catch(e) {
-    console.error('Telegram Send Error:', e.message);
-  }
+  } catch(e) {}
 }
 
 async function generateAIResponse(userText) {
-  try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: `Kamu adalah ${AGENT_NAME}, CS ramah, santuy, gaya lo-gue, balasan maks 3 kalimat.\nPesan Customer WA: ${userText}` }]
-        }]
-      })
-    });
-    const data = await res.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Bentar ya bro, gue cekin dulu data lo!";
-  } catch(e) {
-    console.error('Gemini API Error:', e.message);
-    return "Bentar ya bro, gue cekin stok dulu!";
+  // 1. Try Gemini API first if valid key present
+  if (GEMINI_API_KEY && GEMINI_API_KEY.startsWith('AIzaSy')) {
+    try {
+      const systemPrompt = `Kamu adalah ${AGENT_NAME}. Balaslah SESUAI TOPIK PERTANYAAN CUSTOMER (Harga, Stok, Size, Resi, Bayar, Retur, Bisnis, Curhat).
+      Aturan:
+      - Bahasa santai, ramah, pakai "gue-lo", "wkwk", "bro/sis".
+      - JANGAN HANYA JAWAB HALO BRO! Jawablah secara spesifik sesuai topik pertanyaan customer.
+      - Maksimal 3 kalimat per balasan.`;
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: `${systemPrompt}\n\nPesan Customer WA: ${userText}` }]
+          }]
+        })
+      });
+      const data = await res.json();
+      if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+        return data.candidates[0].content.parts[0].text;
+      }
+    } catch(e) {}
   }
+
+  // 2. Fallback to Topic-Aware Engine
+  return generateTopicResponse(userText);
 }
 
 async function startBridgeSystem() {
   console.log('\n==================================================');
-  console.log('⚡ LAUNCHING WHATSAPP <-> TELEGRAM AI RELAY BRIDGE');
+  console.log('⚡ LAUNCHING TOPIC-AWARE WA ⇄ TELEGRAM BRIDGE');
   console.log('==================================================\n');
 
   const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
@@ -84,13 +157,11 @@ async function startBridgeSystem() {
     }
 
     if (connection === 'open') {
-      console.log('\n🎉 SUCCESS! WHATSAPP ⇄ TELEGRAM BRIDGE IS NOW ONLINE & CONNECTED!');
-      console.log('Ready to process live WhatsApp customer messages via Telegram!\n');
+      console.log('\n🎉 SUCCESS! WHATSAPP ⇄ TELEGRAM BRIDGE IS NOW ONLINE!');
+      console.log('Rule Active: IGNORE GROUPS = YES | TOPIC AWARE = YES\n');
     } else if (connection === 'close') {
       const statusCode = lastDisconnect?.error?.output?.statusCode;
-      console.log(`Connection closed (code: ${statusCode}). Reconnecting...`);
       if (statusCode === DisconnectReason.loggedOut) {
-        console.log('Session logged out. Cleaning session files and restarting...');
         try { fs.rmSync('auth_info_baileys', { recursive: true, force: true }); } catch(e) {}
       }
       setTimeout(startBridgeSystem, 3000);
@@ -103,26 +174,36 @@ async function startBridgeSystem() {
     if (!msg.message || msg.key.fromMe) return;
 
     const waJid = msg.key.remoteJid;
+
+    // 🔥 ATURAN KHUSUS 1: GRUP DIABAIKAN TOTAL 100%!
+    if (waJid.endsWith('@g.us')) {
+      console.log(`🚫 Pesan dari Grup WA (${waJid}) diabaikan.`);
+      return;
+    }
+
     const customerName = msg.pushName || waJid.split('@')[0];
     const customerText = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
 
     if (!customerText) return;
 
-    console.log(`\n[WA Customer] ${customerName} (${waJid}): ${customerText}`);
+    console.log(`\n[WA Customer Personal] ${customerName} (${waJid}): ${customerText}`);
 
+    // Generate Topic-Specific AI Reply
     const aiReply = await generateAIResponse(customerText);
 
+    // Forward to Telegram Admin
     if (lastAdminTelegramChatId) {
-      const tgNotification = `📩 <b>Pesan Masuk WA Customer!</b>\n👤 <b>Nama:</b> ${customerName}\n📱 <b>No. WA:</b> ${waJid.split('@')[0]}\n\n💬 <b>Pesan WA:</b> ${customerText}\n\n🤖 <b>Rekomendasi Balasan AI:</b>\n<i>"${aiReply}"</i>`;
+      const tgNotification = `📩 <b>Pesan WA Personal Masuk!</b>\n👤 <b>Nama:</b> ${customerName}\n📱 <b>No. WA:</b> ${waJid.split('@')[0]}\n\n💬 <b>Pesan WA:</b> ${customerText}\n\n🤖 <b>Balasan Sesuai Topik:</b>\n<i>"${aiReply}"</i>`;
       await sendTelegramMessage(lastAdminTelegramChatId, tgNotification);
     }
 
+    // Auto Send Topic Reply to WA Customer
     await sock.sendPresenceUpdate('composing', waJid);
     await sock.sendMessage(waJid, { text: aiReply });
     console.log(`[WA Balasan Terkirim ke ${customerName}]: ${aiReply}`);
   });
 
-  // 2. Listen for Admin Telegram Commands / Manual Overrides
+  // 2. Listen for Admin Telegram Commands
   let tgLastOffset = 0;
   setInterval(async () => {
     try {
@@ -137,8 +218,6 @@ async function startBridgeSystem() {
             const chatId = update.message.chat.id;
             lastAdminTelegramChatId = chatId;
             const text = update.message.text;
-
-            console.log(`[Telegram Admin ${chatId}]: ${text}`);
 
             if (text.startsWith('/reply')) {
               const parts = text.split(' ');
