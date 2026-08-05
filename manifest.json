@@ -1,7 +1,7 @@
 {
-  "name": "Aria - AI Customer Service Agent",
-  "short_name": "AI Agent CS",
-  "description": "AI Customer Service Agent yang ngobrol kayak manusia, santuy, ramah, dan paham banget!",
+  "name": "Agent Ai Layanan - Smart CS Agent",
+  "short_name": "Agent Ai Layanan",
+  "description": "Agent Ai Layanan Customer Service yang ngobrol kayak manusia, santuy, ramah, dan paham banget!",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0a0f",

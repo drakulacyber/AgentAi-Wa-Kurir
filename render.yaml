@@ -1,0 +1,13 @@
+services:
+  - type: worker
+    name: agent-ai-layanan-wa-bot
+    env: node
+    buildCommand: npm install
+    startCommand: node whatsapp-bot.js
+    envVars:
+      - key: GEMINI_API_KEY
+        value: AQ.Ab8RN6Lqn9wjanRtQBt3xoIFzPQsuEWVBGCEGWGnW-znp7Qvng
+      - key: TELEGRAM_BOT_TOKEN
+        value: 8530097732:AAFaGlPj3kDAT-66ZtfEcCQ03IqoEpekC00
+      - key: AGENT_NAME
+        value: Agent Ai Layanan

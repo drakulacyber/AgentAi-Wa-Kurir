@@ -4,7 +4,6 @@
  */
 export default {
   async fetch(request, env, ctx) {
-    // Handle CORS preflight
     if (request.method === "OPTIONS") {
       return new Response(null, {
         headers: {
@@ -16,7 +15,7 @@ export default {
     }
 
     if (request.method !== "POST") {
-      return new Response(JSON.stringify({ status: "ok", message: "Bang Jago AI Worker is Running!" }), {
+      return new Response(JSON.stringify({ status: "ok", message: "Agent Ai Layanan Worker is Running!" }), {
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
       });
     }
@@ -42,14 +41,14 @@ export default {
           contents: [
             {
               role: "user",
-              parts: [{ text: `Kamu adalah Bang Jago, CS santuy, ramah, pakai lo-gue.\nPertanyaan: ${customerMessage}` }]
+              parts: [{ text: `Kamu adalah Agent Ai Layanan, CS santuy, ramah, pakai lo-gue.\nPertanyaan: ${customerMessage}` }]
             }
           ]
         })
       });
 
       const data = await aiResponse.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Bentar ya bro, gue cekin dulu ke gudang!";
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Bentar ya bro, gue cekin dulu data lo di sistem!";
 
       return new Response(JSON.stringify({ reply: reply, status: "success" }), {
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }

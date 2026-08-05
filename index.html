@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bang Jago - Human-Like AI Customer Service Agent</title>
-  <meta name="description" content="Aplikasi PWA AI Agent Customer Service ramah, santuy, paham bahasa gaul, dan anti-detection dengan Gemini API 100% Gratis!">
+  <title>Agent Ai Layanan - Smart Customer Service PWA</title>
+  <meta name="description" content="Aplikasi PWA Agent Ai Layanan Customer Service ramah, santuy, paham bahasa gaul, dan anti-detection dengan Gemini API & Telegram Bot 100% Gratis!">
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#7c3aed">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%237c3aed'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='50' fill='white'>🤖</text></svg>">
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/responsive.css">
 
-  <!-- Embedded Self-Contained Design System (Guarantees zero-styling-breakage anywhere) -->
+  <!-- Embedded Self-Contained Design System -->
   <style>
     :root {
       --bg-primary: #0a0a0f;
@@ -268,7 +268,7 @@
     <div class="brand-container">
       <div class="logo-badge">🤖</div>
       <div class="brand-info">
-        <h1>Bang Jago AI CS</h1>
+        <h1>Agent Ai Layanan</h1>
         <p>
           <span class="agent-status-badge">
             <span class="status-dot"></span> Online & Ready
@@ -345,17 +345,17 @@
           <span></span>
           <span></span>
         </div>
-        <span class="typing-text"><strong id="typing-agent-name">Bang Jago (AI CS)</strong> sedang mengetik balasan...</span>
+        <span class="typing-text"><strong id="typing-agent-name">Agent Ai Layanan</strong> sedang mengetik balasan...</span>
         <button class="skip-delay-btn" id="btn-skip-delay" title="Lewati delay untuk langsung tampilkan balasan">⚡ Kirim Langsung</button>
       </div>
 
       <!-- Quick Reply Templates Bar -->
       <div class="quick-replies-bar">
-        <div class="quick-chip">Woi bos, baju oversize hitam yang L masih ready ga?</div>
+        <div class="quick-chip">Woi bos, barang yang ini masih ready ga?</div>
         <div class="quick-chip">Paketan gue kok dari kemarin belum nyampe2 ya?!</div>
         <div class="quick-chip">Bisa bayar pake COD atau QRIS ga bro?</div>
         <div class="quick-chip">Ada kode promo atau diskon buat pembeli baru ga?</div>
-        <div class="quick-chip">Garansi retur kalo baju cacat gimana?</div>
+        <div class="quick-chip">Garansi retur kalo barang cacat gimana?</div>
       </div>
 
       <!-- Bottom Chat Input Bar -->
@@ -392,7 +392,7 @@
       <!-- Smart Suggestions -->
       <div class="panel-card">
         <div class="panel-card-title">
-          <span>Smart Suggestions (3 Ospi)</span>
+          <span>Smart Suggestions (3 Opsi)</span>
           <span>🔥</span>
         </div>
         <div class="suggestion-list" id="smart-suggestions-list">
@@ -417,11 +417,11 @@
           </div>
           <div class="memory-row">
             <span class="memory-label">Topik Utama:</span>
-            <span class="memory-val" id="mem-topic">Tanya Stok Sepatu</span>
+            <span class="memory-val" id="mem-topic">Tanya Produk & Stok</span>
           </div>
           <div class="memory-row">
             <span class="memory-label">Masalah Pending:</span>
-            <span class="memory-val" id="mem-unresolved" style="color: var(--warning);">Ingin pesan size L</span>
+            <span class="memory-val" id="mem-unresolved" style="color: var(--warning);">Ingin pesan item L</span>
           </div>
           <div class="memory-row">
             <span class="memory-label">Catatan Khusus:</span>
@@ -437,17 +437,17 @@
   <div class="modal-backdrop" id="settings-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>⚙️ Pengaturan Persona & API Key Gratisan</h3>
+        <h3>⚙️ Pengaturan Persona & Bot Telegram</h3>
         <button class="btn-icon" onclick="uiController.closeModal('settings-modal')">✕</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label>Nama AI CS Agent:</label>
-          <input type="text" id="setting-agent-name" class="form-control" value="Bang Jago">
+          <input type="text" id="setting-agent-name" class="form-control" value="Agent Ai Layanan">
         </div>
         <div class="form-group">
           <label>Nama Bisnis / Brand:</label>
-          <input type="text" id="setting-business-name" class="form-control" value="Jualan Sepatu Keren & Apparel">
+          <input type="text" id="setting-business-name" class="form-control" value="Layanan Pelanggan & E-Commerce">
         </div>
         <div class="form-group">
           <label>Pilih AI Provider (Mode Gratisan):</label>
@@ -462,9 +462,10 @@
           <label>Google Gemini API Key (Gratis di aistudio.google.com):</label>
           <input type="password" id="setting-gemini-key" class="form-control" placeholder="AIzaSy...">
         </div>
-        <div class="form-group">
-          <label>Groq API Key (Opsional / Cadangan di console.groq.com):</label>
-          <input type="password" id="setting-groq-key" class="form-control" placeholder="gsk_...">
+        <div class="form-group" style="background: rgba(124, 58, 237, 0.1); padding: 0.75rem; border-radius: 10px; border: 1px solid var(--accent);">
+          <label style="color: var(--accent-glow);">✈️ Telegram Bot Token (Dari @BotFather di Telegram):</label>
+          <input type="password" id="setting-telegram-token" class="form-control" placeholder="7123456789:AAFxxx...">
+          <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px;">Dapatkan gratis dari aplikasi Telegram HP Anda via @BotFather. Tanpa terminal!</span>
         </div>
         <div class="form-group">
           <label>Gaya Bahasa / Persona Switcher:</label>
